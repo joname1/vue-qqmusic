@@ -4,10 +4,16 @@ import Vue from 'vue'
 import FastClick from 'fastclick'
 import router from './router'
 import App from './App'
+import Lazyload from 'vue-lazyload'
 
 FastClick.attach(document.body)
 
+Vue.use(Lazyload, {
+	loading: require('assets/lazy.svg')
+})
+
 Vue.config.productionTip = false
+
 
 /* eslint-disable no-new */
 new Vue({
