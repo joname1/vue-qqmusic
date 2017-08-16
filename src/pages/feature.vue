@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div>
     <swiper :aspect-ratio="248/621" auto loop>
       <swiper-item class="swiper-demo-img" v-for="(item, index) in banner_list" :key="index"><img :src="item.picUrl"></swiper-item>
@@ -9,14 +9,18 @@
             <div class="disc_img">
                 <img v-lazy="item.imgurl">
             </div>
-            <div class="disc_playnum"><span>▶{{item.listennum}}</span></div>
+            <div class="disc_bottom">
+              <img class="icont-playnum" src="../assets/playnum.svg" />
+              <span>{{item.listennum}}</span>
+              <img class="icont-playbtn" src="../assets/playbtn.svg" />
+            </div>
             <span class="disc_title" v-text="item.dissname"></span>
             <span class="disc_author">by {{item.creator.name}}</span>
         </a>
     </div>
     <div class="loading" v-show="!disc_list.length">
       <loading></loading>
-    </div>
+    </div>  
   </div>
 </template>
 
@@ -25,6 +29,7 @@ import loading from '@/components/loading'
 import {Swiper,SwiperItem,Divider} from 'vux'
 import {getBanner,getDisclist} from 'api/feature'
 import {statusCode} from 'api/config'
+
 export default {
   components: {
     Swiper,SwiperItem,Divider,loading
@@ -55,11 +60,6 @@ export default {
       getDisclist().then((res) => {
         if (res.code == statusCode) {
           this.disc_list = res.data.list
-          var llength = res.data.list.length;
-          for (var i = 0; llength<= 0; i++) {
-            console.log(llength)
-          }
-          
         }
       })
     }
@@ -71,12 +71,16 @@ export default {
 .hot-title{
   margin-top: 13px !important;
 }
+
 .swiper-demo-img img {
   width: 100%;
 }
 
 .loading {
   position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 60%;
 }
 
 .discs {
@@ -122,22 +126,37 @@ export default {
     }
 }
 
-.disc_playnum {
+.disc_bottom {
   position: relative;
   bottom: 25px;
   color: white;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.73);
   width: 100%;
 
   span {
-    margin-left: 5px;
+    margin-left: 24px;
   }
 }
+
+.icont-playbtn {
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  right: 0;
+  margin: 3px 5px;
+}
+
+.icont-playnum{
+    position: absolute;
+    width: 1.0rem;
+    height: 1.0rem;
+    margin: 4px 0px 0px 5px;
+  }
 
 .disc_title {
     display: block;
     color: #000000;
-    font-size: 14px;
+    font-size: 13.5px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

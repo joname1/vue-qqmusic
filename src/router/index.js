@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Feature from '@/pages/Feature'
-import Rank from '@/pages/Rank'
-import Search from '@/pages/Search'
+import Feature from '@/pages/feature'
+import Singer from '@/pages/singer'
+import Rank from '@/pages/rank'
+import Search from '@/pages/search'
 
 Vue.use(Router)
 
@@ -10,18 +11,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: Feature
+      redirect: '/feature'
     },{
       path: '/feature',
-      name: 'Feature',
       component: Feature
     },{
+      path: '/singer',
+      component: Singer
+    },{
     	path: '/rank',
-    	name: 'Rank',
     	component: Rank
     },{
     	path: '/search',
-    	name: 'Search',
     	component: Search
     }
   ]

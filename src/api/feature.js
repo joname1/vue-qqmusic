@@ -5,7 +5,7 @@ import axios from 'axios'
 export function getBanner(){
 	const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
 
-	const data = Object.assign({},commonparams,{
+	const data = Object.assign({}, commonparams, {
 		platform: 'h5',
 		uin: 0,
 		needNewCode: 1
@@ -14,7 +14,7 @@ export function getBanner(){
 }
 
 export function getDisclist(){
-	const url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
+	const url = '/api/getDisclist'
 
 	const data = Object.assign({}, commonparams, {
 		platform: 'yqq',
@@ -24,7 +24,12 @@ export function getDisclist(){
 		sortId: 5,
 		needNewCode: 0,
 		rnd: Math.random(),
-		categoryId:10000000
+		categoryId:10000000,
+		format: 'json'
 	})
-	return jsonp(url, data, options)
+	return axios.get(url, {
+		params: data
+	}).then((res) => {
+		return Promise.resolve(res.data)
+	})
 }

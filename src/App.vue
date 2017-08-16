@@ -4,13 +4,13 @@
     <tabnav></tabnav>
     <keep-alive>
     	<router-view></router-view>
-	</keep-alive>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-import tabnav from "@/common/tabnav"
-import mheader from "@/common/header"
+import tabnav from "@/components/tabnav"
+import mheader from "@/components/header"
 export default {
   name: 'app',
   components: {

@@ -1,15 +1,24 @@
 <template>
   <div>
     <tab>
-      <tab-item selected @on-item-click="onItemClick"><router-link to="/feature" tag="div">精选</router-link></tab-item>
-      <tab-item @on-item-click="onItemClick"><router-link to="/rank" tag="div">排行榜</router-link></tab-item>
-      <tab-item @on-item-click="onItemClick"><router-link to="/search" tag="div">搜索</router-link></tab-item>      
+      <tab-item selected>
+        <router-link to="/feature" tag="div">精选</router-link>
+      </tab-item>
+      <tab-item>
+        <router-link to="/singer" tag="div">歌手</router-link>
+      </tab-item>
+      <tab-item>
+        <router-link to="/rank" tag="div">排行榜</router-link>
+      </tab-item>
+      <tab-item>
+        <router-link to="/search" tag="div">搜索</router-link>
+      </tab-item>      
     </tab>
   </div>
 </template>
 
 <script>
-import { Tab, TabItem, Swiper, SwiperItem } from 'vux'
+import {Tab,TabItem,Swiper,SwiperItem} from 'vux'
 
 export default {
   components: {
@@ -22,10 +31,8 @@ export default {
   },
   methods: {
     onItemClick (index) {
-      // console.log('on item click:', index)
     }
     }
-    
 }
 </script>
 
