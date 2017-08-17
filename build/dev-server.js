@@ -21,27 +21,27 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 // https://github.com/chimurai/http-proxy-middleware
 var proxyTable = config.dev.proxyTable
 
-//本地代理 解决跨域
+//本地代理跨域
 var app = express()
-var apiRoutes = express.Router()
+// var apiRoutes = express.Router()
 
-apiRoutes.get('/getDisclist', function(req, res){
-	var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
+// apiRoutes.get('/getDisclist', function(req, res){
+// 	var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
 
-	axios.get(url, {
-		headers: {
-			referer: 'https://c.y.qq.com/',
-			hosts: 'c.y.qq.com'
-		},
-		params: req.query
-	}).then((response) => {
-		res.json(response.data)
-	}).catch((err) =>{
-		console.log(err)
-	})
-})
+// 	axios.get(url, {
+// 		headers: {
+// 			referer: 'https://c.y.qq.com/',
+// 			hosts: 'c.y.qq.com'
+// 		},
+// 		params: req.query
+// 	}).then((response) => {
+// 		res.json(response.data)
+// 	}).catch((err) =>{
+// 		console.log(err)
+// 	})
+// })
 
-app.use('/api', apiRoutes)
+// app.use('/api', apiRoutes)
 
 
 var compiler = webpack(webpackConfig)

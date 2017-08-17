@@ -1,7 +1,7 @@
 <template> 
   <div>
     <swiper :aspect-ratio="248/621" auto loop>
-      <swiper-item class="swiper-demo-img" v-for="(item, index) in banner_list" :key="index"><img :src="item.picUrl"></swiper-item>
+      <swiper-item class="swiper_img" v-for="(item, index) in banner_list" :key="index"><img :src="item.picUrl"></swiper-item>
     </swiper>
     <divider class="hot-title" v-text="sub_title"></divider>
     <div class="discs">
@@ -27,7 +27,7 @@
 <script>
 import loading from '@/components/loading'
 import {Swiper,SwiperItem,Divider} from 'vux'
-import {getBanner,getDisclist} from 'api/feature'
+import {getBannerlist,getDisclist} from 'api/feature'
 import {statusCode} from 'api/config'
 
 export default {
@@ -42,25 +42,40 @@ export default {
     }
   },
   created(){
-    this._getBanner()
+    this._getBannerlist()
 
     setTimeout(() => {
       this._getDisclist()
     },1000)
   },
   methods:{
-    _getBanner(){
-      getBanner().then((res) => {
+    _getBannerlist(){
+      getBannerlist().then((res) => {
         if (res.code == statusCode) {
           this.banner_list = res.data.slider
         }
       })
     },
-    _getDisclist(){
-      getDisclist().then((res) => {
-        if (res.code == statusCode) {
-          this.disc_list = res.data.list
-        }
+    _getDisclist() {
+      this.$http.jsonp('https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg', {
+        params: {
+          rnd: Math.random(),
+          g_tk: 621402643,
+          hostUin: 0,
+          format: 'jsonp',
+          inCharset: 'uft-8',
+          outCharset: 'uft-8',
+          notice: 0,
+          platform: 'yqq',
+          needNewCode: 0,
+          categoryId: 10000000,
+          sortId: 5,
+          sin: 0,
+          ein: 29
+        },
+          jsonp: 'jsonpCallback'
+      }).then((res) => {
+        this.disc_list = res.data.data.list
       })
     }
   }
@@ -72,7 +87,7 @@ export default {
   margin-top: 13px !important;
 }
 
-.swiper-demo-img img {
+.swiper_img img {
   width: 100%;
 }
 
@@ -96,7 +111,7 @@ export default {
     box-sizing: border-box;
 
     &:active {
-        background-color: #ECECEC;
+        background-color: #ececec;
     }
 
     &:before {
@@ -137,21 +152,19 @@ export default {
     margin-left: 24px;
   }
 }
-
-.icont-playbtn {
+.icont-playnum,.icont-playbtn{
   position: absolute;
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.0rem;
+  height: 1.0rem;
+}
+.icont-playbtn {
   right: 0;
-  margin: 3px 5px;
+  margin: 5px 5px;
 }
 
 .icont-playnum{
-    position: absolute;
-    width: 1.0rem;
-    height: 1.0rem;
     margin: 4px 0px 0px 5px;
-  }
+}
 
 .disc_title {
     display: block;

@@ -1,54 +1,19 @@
 <template>
-	<div>
-		<div class="singerlist-wrapper">
-			<div class="indexlist">
-				<ul class="indexlist-content">
-					<li v-for="item in singers">
-						<p class="list_title">A</p>
-							<ul>
-								<a href="javascript:;">
-									<div class="singer_info">
-										<img class="singer_avatar" src="http://p.qpic.cn/music_cover/NJjuMOxtdpFtqDEZIb8Ne00SiapRE3KS6gTZVlDQd0oicic0GxyHZicAwQ/600?n=1"></img>
-										<span class="singer_name">{{item.Fsinger_name}}</span>
-									</div>
-								</a>
-							</ul>
-					</li>
-				</ul>
-				</div>
-				<div class="indexlist-nav">
-					<ul class="indexlist-navlist">
-						<li class="indexlist-navitem">A</li>
-						<li class="indexlist-navitem">B</li>
-						<li class="indexlist-navitem">C</li>
-						<li class="indexlist-navitem">D</li>
-						<li class="indexlist-navitem">E</li>
-						<li class="indexlist-navitem">F</li>
-						<li class="indexlist-navitem">G</li>
-						<li class="indexlist-navitem">H</li>
-						<li class="indexlist-navitem">I</li>
-						<li class="indexlist-navitem">J</li>
-						<li class="indexlist-navitem">K</li>
-						<li class="indexlist-navitem">L</li>
-						<li class="indexlist-navitem">N</li>
-						<li class="indexlist-navitem">M</li>
-						<li class="indexlist-navitem">O</li>
-						<li class="indexlist-navitem">P</li>
-						<li class="indexlist-navitem">Q</li>
-						<li class="indexlist-navitem">R</li>
-						<li class="indexlist-navitem">S</li>
-						<li class="indexlist-navitem">T</li>
-						<li class="indexlist-navitem">U</li>
-						<li class="indexlist-navitem">V</li>
-						<li class="indexlist-navitem">W</li>
-						<li class="indexlist-navitem">X</li>
-						<li class="indexlist-navitem">Y</li>
-						<li class="indexlist-navitem">Z</li>
-						<li class="indexlist-navitem">#</li>
-					</ul>
-				</div>
-			</div>
+	<div class="list-wrapper">
+		<div class="indexlist">
+			<ul class="indexlist_content">
+				<li v-for="group in singers">
+					<p class="indexlist_title"><span>{{group.title}}</span></p>
+						<a @click="singerview" v-for="item in group.items">
+							<div class="singer_info">
+								<img class="singer_avatar" v-lazy="item.avatar"></img>
+								<span class="singer_name">{{item.name}}</span>
+							</div>
+						</a>
+				</li>
+			</ul>
 		</div>
+	<router-view></router-view>
 	</div>
 </template>
 
@@ -71,24 +36,48 @@ export default {
   	_getSingerlist: function(){
   		getSingerlist().then((res) => {
   			if (res.code == statusCode) {
-  			this.singers = res.data.list
+  			this.singers = this._normalize(res.data.list)
   			}
   		})
+  	},
+  	_normalize(list) {
+  	let map = { }
+  	list.forEach((item) => {
+  	const key = item.Findex
+  	if (!map[key]) {
+  		map[key] = {
+  			title: key,
+  			items: []
+  		}
   	}
+  	map[key].items.push({
+  		id: item.Fsinger_mid,
+  		name: item.Fsinger_name,
+  		avatar: `https://y.gtimg.cn/music/photo_new/T001R90x90M000${item.Fsinger_mid}.jpg?max_age=2592000`
+  	})
+  })
+  	let rat = []
+  	for (let key in map) {
+  		let val = map[key]
+  		if (val.title.match(/[a-zA-Z]/)) {
+  			rat.push(val)
+  		}
+  	}
+  	rat.sort((a, b) =>{
+  		return a.title.charCodeAt(0) - b.title.charCodeAt(0)
+  	})
+  	return rat.concat()
+  },
+  singerview(singer) {
+  	this.$router.push({
+  		path: `/singer/${singer.id}`
+  	})
   }
 }
+}
 </script>
-<style>
-.singer_avatar {
-	height: 50px;
-	width: 50px;
-	border-radius: 50%;
-}
-.singer_name{
-	color: black;
-	margin: 10px 15px;
-}
-.singerlist-wrapper {
+<style scoped>
+.list-wrapper {
     width: 100%;
 }
 .indexlist {
@@ -96,83 +85,38 @@ export default {
     position: relative;
     overflow: hidden
 }
-.indexlist-nav {
+.indexlist_content {
 	height: 576px;
-	line-height: 15px;
-    position: absolute;
-    top: 5.6rem;
-    bottom: 0;
-    right: 0;
-    margin: 0;
-    background-color: #fff;
-    border-left: solid 1px #ddd;
-    text-align: center;
-    max-height: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
 }
-.indexlist-navlist {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    max-height: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column
-}
-.indexlist-navitem {
-    padding: 2px 6px;
-    font-size: 12px;
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
-    -webkit-touch-callout: none
-}
-.list_title {
-    margin: 0;
-    background-color: #ececec;
+.indexlist_title {
+    background-color: #e5e5e5;
     padding-left: 15px;
     font-weight: bold;
 }
-.indexlist-content {
-	overflow: auto;
-	height: 576px;
-	margin: 0;
-	padding: 0; 
-}
 .singer_info {
-    background-size: 120% 1px;
-    background-repeat: no-repeat;
-    background-position: top left;
+	border-bottom: 1px solid #efeff4;
     background-origin: content-box;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
     box-sizing: border-box;
     display: flex;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 3;
     min-height: inherit;
     overflow: hidden;
     padding: 0 20px;
     width: 100%;
 }
-.mint-cell-title {
-    -webkit-box-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
+.singer_avatar {
+	height: 3.333333rem;
+	width: 3.333333rem;
+	border-radius: 50%;
+}
+.singer_name{
+	color: black;
+	margin: 10px 12px;
 }
 </style>

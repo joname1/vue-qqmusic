@@ -5,9 +5,11 @@ import FastClick from 'fastclick'
 import router from './router'
 import App from './App'
 import Lazyload from 'vue-lazyload'
+import Resource from 'vue-resource'
 
 FastClick.attach(document.body)
 
+Vue.use(Resource)
 Vue.use(Lazyload, {
 	loading: require('assets/lazy.svg')
 })
