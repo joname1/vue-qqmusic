@@ -10,9 +10,9 @@
                 <img v-lazy="item.imgurl">
             </div>
             <div class="disc_bottom">
-              <img class="icont-playnum" src="../assets/playnum.svg" />
+              <img class="icon_playnum" src="../assets/playnum.svg" />
               <span>{{item.listennum}}</span>
-              <img class="icont-playbtn" src="../assets/playbtn.svg" />
+              <img class="icon_playbtn" src="../assets/playbtn.svg" />
             </div>
             <span class="disc_title" v-text="item.dissname"></span>
             <span class="disc_author">by {{item.creator.name}}</span>
@@ -76,6 +76,12 @@ export default {
           jsonp: 'jsonpCallback'
       }).then((res) => {
         this.disc_list = res.data.data.list
+        let info = res.data.data.list
+        //for (let i = 0; info.length > i; i++) {
+               //let h = info[i].listennum;
+               //let s = h.toString();
+          //this.disc_list.push({listennum: s.slice(0,2)})
+        //}
       })
     }
   }
@@ -149,21 +155,25 @@ export default {
   width: 100%;
 
   span {
+    font-size: 13px;
     margin-left: 24px;
   }
 }
-.icont-playnum,.icont-playbtn{
+.icon_playnum,.icon_playbtn{
   position: absolute;
-  width: 1.0rem;
-  height: 1.0rem;
-}
-.icont-playbtn {
-  right: 0;
-  margin: 5px 5px;
 }
 
-.icont-playnum{
-    margin: 4px 0px 0px 5px;
+.icon_playnum{
+  width: 13px;
+  height: 13px;
+  margin: 6px 0px 0px 7px;
+}
+
+.icon_playbtn {
+  right: 0;
+  margin: 3px 5px;
+  width: 20px;
+  height: 20px;
 }
 
 .disc_title {
