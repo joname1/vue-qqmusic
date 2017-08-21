@@ -1,8 +1,6 @@
 <template>
 	<div>
-	<div class="list-wrapper">
 		<singerList @select="singerview"></singerList>
-	</div>
 		<router-view></router-view>
 	</div>
 </template>
@@ -22,7 +20,7 @@ export default {
   methods: {
   	singerview(singer) {
   		this.$router.push({
-  			path: `/singerDetails/${singer.id}`
+  			path: `/singer/${singer.id}`
   		})
   	}
   }

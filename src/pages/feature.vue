@@ -6,12 +6,13 @@
     <divider class="hot-title" v-text="sub_title"></divider>
     <div class="discs">
         <a href="javascript:;" class="disc_items" v-for="item in disc_list">
+            <!-- <img class="icon_playbtn" src="../assets/playbtn.svg" /> -->
             <div class="disc_img">
                 <img v-lazy="item.imgurl">
             </div>
             <div class="disc_bottom">
               <img class="icon_playnum" src="../assets/playnum.svg" />
-              <span>{{item.listennum}}</span>
+              <span>{{item.listennum | getCount}}</span>
               <img class="icon_playbtn" src="../assets/playbtn.svg" />
             </div>
             <span class="disc_title" v-text="item.dissname"></span>
@@ -84,6 +85,11 @@ export default {
         //}
       })
     }
+  },
+  filters: {
+    getCount: num => {
+        return Math.round(num / 1000) / 10 + '万'
+      }
   }
 }
 </script>

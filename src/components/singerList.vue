@@ -1,4 +1,5 @@
 <template>
+  <div class="list-wrapper">
     <div class="indexlist">
       <ul class="indexlist_content">
         <li v-for="group in singers">
@@ -12,6 +13,7 @@
         </li>
       </ul>
     </div>
+  </div>
 </template>
 
 <script>
@@ -38,7 +40,7 @@ export default {
         }
       })
   },
-  _normalize(list) {
+  _normalize: list => {
     let map = { }
     list.forEach((item) => {
       const key = item.Findex
@@ -79,7 +81,7 @@ export default {
 .indexlist {
     width: 100%;
     position: relative;
-    overflow: hidden
+    overflow: hidden;
 }
 .indexlist_content {
   height: 576px;
