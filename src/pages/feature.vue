@@ -6,14 +6,13 @@
     <divider class="hot-title" v-text="sub_title"></divider>
     <div class="discs">
         <a href="javascript:;" class="disc_items" v-for="item in disc_list">
-            <!-- <img class="icon_playbtn" src="../assets/playbtn.svg" /> -->
             <div class="disc_img">
                 <img v-lazy="item.imgurl">
             </div>
             <div class="disc_bottom">
-              <img class="icon_playnum" src="../assets/playnum.svg" />
+              <img class="icon_playnum" src="../assets/listen.svg" />
               <span>{{item.listennum | getCount}}</span>
-              <img class="icon_playbtn" src="../assets/playbtn.svg" />
+              <img class="icon_playbtn" src="../assets/listenb.svg" />
             </div>
             <span class="disc_title" v-text="item.dissname"></span>
             <span class="disc_author">by {{item.creator.name}}</span>
@@ -28,7 +27,7 @@
 <script>
 import loading from '@/components/loading'
 import {Swiper,SwiperItem,Divider} from 'vux'
-import {getBannerlist,getDisclist} from 'api/feature'
+import {getBannerlist,getDisclist,furl} from 'api/feature'
 import {statusCode} from 'api/config'
 
 export default {
@@ -58,7 +57,7 @@ export default {
       })
     },
     _getDisclist() {
-      this.$http.jsonp('https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg', {
+      this.$http.jsonp(furl, {
         params: {
           rnd: Math.random(),
           g_tk: 621402643,
@@ -77,12 +76,6 @@ export default {
           jsonp: 'jsonpCallback'
       }).then((res) => {
         this.disc_list = res.data.data.list
-        let info = res.data.data.list
-        //for (let i = 0; info.length > i; i++) {
-               //let h = info[i].listennum;
-               //let s = h.toString();
-          //this.disc_list.push({listennum: s.slice(0,2)})
-        //}
       })
     }
   },

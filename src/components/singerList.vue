@@ -56,17 +56,17 @@ export default {
         avatar: `https://y.gtimg.cn/music/photo_new/T001R90x90M000${item.Fsinger_mid}.jpg?max_age=2592000`
       })
     })
-    let rat =[]
+    let ret =[]
     for (let key in map) {
       let val = map[key]
       if (val.title.match(/[a-zA-Z]/)) {
-        rat.push(val)
+        ret.push(val)
       }
     }
-    rat.sort((a,b) => {
+    ret.sort((a,b) => {
       return a.title.charCodeAt(0) - b.title.charCodeAt(0)
     })
-    return rat.concat()
+    return ret.concat()
   },
   singerview(item) {
     this.$emit('select', item)

@@ -1,46 +1,47 @@
 <template>
   <div id="rankpage">
-    <div class="singer-photo">
-      <img src="http://imgcache.qq.com/music/photo_new/T002R300x300M000003W45rC3ob4SX.jpg">
-    </div>
+<!--     <div class="singer-photo">
+      <img :src="this.singer.avatar">
+    </div>-->
     <div class="header-bar dark">
       <div class="back-button">
-        <div class="back-icon">
-          <img src="../assets/playnum.svg">
-          <img src="../assets/playnum.svg">
-        </div>
-        <div class="back-text">
-          排行榜
+        <div class="back-icon" @click="goback">
+          <img src="../assets/back.svg">
         </div>
       </div>
-    </div>
-    <div id="singer-header" class="header border-1px border-1px-after">
-      <div class="header-blank"></div>
+    </div> 
+    <!-- <x-header :left-options="{backText: ''}"></x-header> -->
+    <blur :blur-amount=20 :url="this.singer.avatar">
+      <p class="singer_info">
+        <img :src="this.singer.avatar">
+        <!-- <p class="singer_name">{{this.singer.name}}</p> -->
+      </p>
+    </blur>
+     <!-- <div id="singer-header" class="header border-1px border-1px-after">
+     <div class="header-blank"></div>
       <div class="header-warp">
-        <div class="singer-info dark">
-          <h1 class="singer-name">杀猪刀</h1>
-          <p class="singer-fans">1212万</p>
+         <div class="singer-info">
+          <h2 class="singer-name">{{this.singer.name}}</h2>
         </div>
         <div class="play-button">
-          <img src="../assets/playnum.svg">
+          <img src="../assets/play.png">
         </div>
       </div>
-    </div>
+    </div>  -->
     <div class="list">
       <ul>
-        <li class="border-1px border-1px-after">
-          <div class="music-index dark">1</div>
+        <li class="border-1px border-1px-after" v-for="(item,index) in songlist">
+          <div class="music-index">{{index+1}}</div>
           <div class="music-info">
-            <div class="music-name dark">
-              塘角鱼
+            <div class="music-name">
+              {{item.name}}
             </div>
             <div class="music-singer">
-              <span>塘角鱼-</span>
-              <span>专辑啊啊啊</span>
+              <span>{{item.album}}</span>
             </div>
           </div>
           <div class="action-button">
-            <img src="../assets/playnum.svg">
+            <img src="../assets/more.png">
           </div>
         </li>
       </ul>
@@ -49,35 +50,79 @@
 </template>
 
 <script>
+import {Blur} from 'vux'
+import {durl} from 'api/singer'
+import {createSong} from 'api/song'
+import {mapGetters} from 'vuex'
 
   export default {
+    components:{
+      Blur
+    },
     data () {
       return {
-
+        songlist: [],
+        index: this.index
       }
     },
-    methods: {
-
-    },
     computed: {
-
+      ...mapGetters([
+        'singer'
+      ])
     },
-    created: function () {
-
+    created() {
+      //console.log(this.singer)
+      this._getsingerDetail()
     },
-    filters: {
-
+    methods: {
+      _getsingerDetail() {
+        if (!this.singer.id) {
+          this.$router.push('/singer')
+        }
+        this.$http.jsonp(durl, {
+          params: {
+            g_tk: 274524505,
+            hostUin: 0,
+            format: 'jsonp',
+            inCharset: 'uft8',
+            outCharset: 'uft-8',
+            notice: 0,
+            platform: 'yqq',
+            needNewCode: 0,
+            singermid: this.singer.id,
+            order: 'listen',
+            begin: 0,
+            num: 100,
+            songstatus: 1
+          },
+          jsonp: 'jsonpCallback'
+        }).then((res) => {
+          this.songlist = this._normalizeSongs(res.data.data.list)
+          //console.log(this.songlist)
+        })
+      },
+      _normalizeSongs(list) {
+        let ret = []
+        list.forEach((item) => {
+          let {musicData} = item
+          if (musicData.songid && musicData.albummid) {
+            ret.push(createSong(musicData))
+          }
+        })
+        return ret
+      },
+      goback() {
+        this.$router.push('/singer')
+      }
     }
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
   .tab-swiper {
     background-color: #fff;
     height: 100px;
   }
-  /*border-1px 部分*/
   .border-1px {
     position: relative;
   }
@@ -137,13 +182,14 @@
     max-width: 68vh;
     height: 100vw;
     max-height: 68vh;
-  }
-  .singer-photo img {
+
+  img {
     width: 100%;
     max-width: 68vh;
     height: 100vw;
     max-height: 68vh;
   }
+}
   .header-bar {
     position: fixed;
     top: 0;
@@ -153,7 +199,6 @@
     z-index: 2;
   }
   .header-bar .back-button {
-    /*    width:25px;*/
     height: 25px;
     margin: 12.5px;
     margin-left: 5px;
@@ -191,7 +236,6 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    /*background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgb(135, 112, 101));*/
   }
   .header-warp .play-button {
     display: flex;
@@ -209,7 +253,6 @@
     height: 25px;
   }
   .list {
-    /*background: rgb(135, 112, 101);*/
     z-index: 1;
     padding-bottom: 50px;
   }
@@ -220,8 +263,8 @@
   .list ul {
     list-style: none;
     padding-left: 10px;
-  }
-  .list ul li {
+
+    li {
     display: flex;
     display: -webkit-flex;
     flex-direction: row;
@@ -231,6 +274,7 @@
     margin-left:44px;
     cursor:pointer;
   }
+}
   .list ul li .music-index{
     margin-left: -50px;
     width: 50px;
@@ -274,4 +318,17 @@
     font-size: 14px;
     padding: 10px;
   }
+  .singer_info {
+  text-align: center;
+  padding-top: 20px;
+  color: #fff;
+  font-size: 18px;
+
+  img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid #ececec;
+  }
+}
 </style>

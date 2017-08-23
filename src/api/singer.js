@@ -1,6 +1,8 @@
 import jsonp from 'base/jsonp'
 import {commonparams, options} from 'api/config'
 
+export const durl = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg'
+
 export function getSingerlist(){
 	const url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
 
