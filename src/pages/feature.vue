@@ -49,7 +49,7 @@ export default {
     },1000)
   },
   methods:{
-    _getBannerlist(){
+    _getBannerlist() {
       getBannerlist().then((res) => {
         if (res.code == statusCode) {
           this.banner_list = res.data.slider
@@ -57,27 +57,35 @@ export default {
       })
     },
     _getDisclist() {
-      this.$http.jsonp(furl, {
-        params: {
-          rnd: Math.random(),
-          g_tk: 621402643,
-          hostUin: 0,
-          format: 'jsonp',
-          inCharset: 'uft-8',
-          outCharset: 'uft-8',
-          notice: 0,
-          platform: 'yqq',
-          needNewCode: 0,
-          categoryId: 10000000,
-          sortId: 5,
-          sin: 0,
-          ein: 29
-        },
-          jsonp: 'jsonpCallback'
-      }).then((res) => {
-        this.disc_list = res.data.data.list
+      getDisclist().then((res) => {
+        if (res.code == statusCode) {
+          this.disc_list = res.data.list
+        }
       })
     }
+    // _getDisclist() {
+    //   this.$http.jsonp(furl, {
+    //     params: {
+    //       rnd: Math.random(),
+    //       g_tk: 5381,
+    //       hostUin: 0,
+    //       loginUin: 274158741,
+    //       format: 'jsonp',
+    //       inCharset: 'uft8',
+    //       outCharset: 'uft-8',
+    //       notice: 0,
+    //       platform: 'yqq',
+    //       needNewCode: 0,
+    //       categoryId: 10000000,
+    //       sortId: 5,
+    //       sin: 0,
+    //       ein: 29
+    //     },
+    //       jsonp: 'jsonpCallback'
+    //   }).then((res) => {
+    //     console.log(res)
+    //   })
+    // }
   },
   filters: {
     getCount: num => {

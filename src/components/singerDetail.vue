@@ -11,17 +11,16 @@
       </div>
     </div> 
     <!-- <x-header :left-options="{backText: ''}"></x-header> -->
-    <blur :blur-amount=20 :url="this.singer.avatar">
+    <blur :blur-amount=20 :url="pbbg">
       <p class="singer_info">
         <img :src="this.singer.avatar">
-        <!-- <p class="singer_name">{{this.singer.name}}</p> -->
+        <p class="singer_name">{{this.singer.name}}</p>
       </p>
     </blur>
-     <!-- <div id="singer-header" class="header border-1px border-1px-after">
-     <div class="header-blank"></div>
+<!--      <div id="singer-header" class="header border-1px border-1px-after">
       <div class="header-warp">
          <div class="singer-info">
-          <h2 class="singer-name">{{this.singer.name}}</h2>
+          <h3 class="singer-name" style="color:white;">{{this.singer.name}}</h3>
         </div>
         <div class="play-button">
           <img src="../assets/play.png">
@@ -62,7 +61,8 @@ import {mapGetters} from 'vuex'
     data () {
       return {
         songlist: [],
-        index: this.index
+        index: this.index,
+        pbbg: 'https://y.gtimg.cn/music/photo_new/T001R300x300M000002MiBdR19HQWx.jpg?max_age=2592000'
       }
     },
     computed: {
@@ -225,6 +225,8 @@ import {mapGetters} from 'vuex'
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: absolute;
+    top: 130px;
   }
   .header-blank {
     display: flex;
@@ -273,6 +275,7 @@ import {mapGetters} from 'vuex'
     height: 60px;
     margin-left:44px;
     cursor:pointer;
+    border-bottom: 1px solid #eee;
   }
 }
   .list ul li .music-index{
@@ -330,5 +333,9 @@ import {mapGetters} from 'vuex'
   border-radius: 50%;
   border: 4px solid #ececec;
   }
+}
+.singer_name {
+  text-align: center;
+  color: white;
 }
 </style>
