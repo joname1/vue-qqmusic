@@ -1,6 +1,6 @@
 <template>
   <div id="rankpage">
-<!--     <div class="singer-photo">
+<!--<div class="singer-photo">
       <img :src="this.singer.avatar">
     </div>-->
     <div class="header-bar dark">
@@ -10,14 +10,13 @@
         </div>
       </div>
     </div> 
-    <!-- <x-header :left-options="{backText: ''}"></x-header> -->
     <blur :blur-amount=20 :url="pbbg">
       <p class="singer_info">
         <img :src="this.singer.avatar">
         <p class="singer_name">{{this.singer.name}}</p>
       </p>
     </blur>
-<!--      <div id="singer-header" class="header border-1px border-1px-after">
+<!--<div id="singer-header" class="header border-1px border-1px-after">
       <div class="header-warp">
          <div class="singer-info">
           <h3 class="singer-name" style="color:white;">{{this.singer.name}}</h3>
@@ -26,10 +25,10 @@
           <img src="../assets/play.png">
         </div>
       </div>
-    </div>  -->
+    </div>-->
     <div class="list">
       <ul>
-        <li class="border-1px border-1px-after" v-for="(item,index) in songlist">
+        <li class="border-1px border-1px-after" v-for="(item,index) in songlist" @click="selectItem(song,index)">
           <div class="music-index">{{index+1}}</div>
           <div class="music-info">
             <div class="music-name">
@@ -39,11 +38,14 @@
               <span>{{item.album}}</span>
             </div>
           </div>
-          <div class="action-button">
+<!--      <div class="action-button">
             <img src="../assets/more.png">
-          </div>
+          </div> -->
         </li>
       </ul>
+    </div>
+    <div class="loading" v-show="!songlist.length">
+      <loading></loading>
     </div>
   </div>
 </template>
@@ -53,16 +55,17 @@ import {Blur} from 'vux'
 import {durl} from 'api/singer'
 import {createSong} from 'api/song'
 import {mapGetters} from 'vuex'
+import loading from '@/components/loading'
 
   export default {
     components:{
-      Blur
+      Blur,loading
     },
     data () {
       return {
         songlist: [],
         index: this.index,
-        pbbg: 'https://y.gtimg.cn/music/photo_new/T001R300x300M000002MiBdR19HQWx.jpg?max_age=2592000'
+        pbbg: 'http://ww3.sinaimg.cn/large/0060lm7Tgy1fizayto3x1j30dw0dwmxy.jpg'
       }
     },
     computed: {
@@ -71,8 +74,7 @@ import {mapGetters} from 'vuex'
       ])
     },
     created() {
-      //console.log(this.singer)
-      this._getsingerDetail()
+        this._getsingerDetail()
     },
     methods: {
       _getsingerDetail() {
@@ -98,7 +100,6 @@ import {mapGetters} from 'vuex'
           jsonp: 'jsonpCallback'
         }).then((res) => {
           this.songlist = this._normalizeSongs(res.data.data.list)
-          //console.log(this.songlist)
         })
       },
       _normalizeSongs(list) {
@@ -112,13 +113,19 @@ import {mapGetters} from 'vuex'
         return ret
       },
       goback() {
-        this.$router.push('/singer')
+        this.$router.back()
       }
     }
   }
 </script>
 
 <style scoped lang="less">
+.loading {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 60%;
+}
   .tab-swiper {
     background-color: #fff;
     height: 100px;
